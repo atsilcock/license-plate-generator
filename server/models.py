@@ -9,6 +9,8 @@ from config import db
 class State(db.Model, SerializerMixin):
     __tablename__ = "states"
 
+    serialize_rules = ('-drivers.state',)
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     date_moved_to_state = db.Column(db.Date) 
@@ -17,6 +19,8 @@ class State(db.Model, SerializerMixin):
 
 class Driver(db.Model, SerializerMixin):
     __tablename__ = "drivers"
+
+    serialize_rules = ('-license.driver', '-cars.drivers')
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -42,6 +46,8 @@ class Driver(db.Model, SerializerMixin):
 
 class Car(db.Model, SerializerMixin):
     __tablename__ = "cars"
+
+    serialize_rules = ('-drivers.cars',)
 
     id = db.Column(db.Integer, primary_key=True)
     make = db.Column(db.String, nullable=False)
@@ -78,6 +84,8 @@ class Car(db.Model, SerializerMixin):
 
 class LicenseInfo(db.Model, SerializerMixin):
     __tablename__ = "licenseInfo"
+
+    serialize_rules = ('-driver.license',)
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
