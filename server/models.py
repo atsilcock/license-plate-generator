@@ -12,7 +12,21 @@ class State(db.Model, SerializerMixin):
     name = db.Column(db.String, nullable=False)
     date_moved_to_state = db.Column(db.Date) 
 
-    license_info_id = db.Column(db.Integer, db.ForeignKey('licenseInfo.id'))
+    drivers = db.relationship("Driver", back_populates = "state")
+
+
+class Driver(db.Model, SerializerMixin):
+    __tablename = "drivers"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.column(db.String, nullable=False)
+
+    state_id = db.Column(db.Integer, db.ForeignKey('states.id'))
+
+    state = db.relationship("State", back_populates="drivers")
+    
+
+
 
 
 
@@ -26,6 +40,8 @@ class Car(db.Model, SerializerMixin):
     color = db.Column(db.String, nullable=False)  
     vin = db.Column(db.String)
 
+    license_info_id = db.Column(db.Integer, db.ForeignKey('states.id'))
+
 
    
 
@@ -38,6 +54,9 @@ class LicenseInfo(db.Model, SerializerMixin):
     date_of_birth = db.Column(db.Date, nullable=False)
     state_id = db.Column(db.Integer, db.ForeignKey('states.id'))
     address = db.Column(db.String, nullable=False)
+
+    license_info_id = db.Column(db.Integer, db.ForeignKey('states.id'))
+
 
 
 
