@@ -40,13 +40,11 @@ class Driver(db.Model, SerializerMixin):
         return value
 
 
-
-
 class Car(db.Model, SerializerMixin):
     __tablename__ = "cars"
 
     id = db.Column(db.Integer, primary_key=True)
-    make = db.Column(db.String, nullable=False)
+    make = db.Column(db.String, nullable=False5)
     model = db.Column(db.String, nullable=False)
     year = db.Column(db.Integer, nullable=False)
     color = db.Column(db.String, nullable=False)  
