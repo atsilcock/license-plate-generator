@@ -19,17 +19,13 @@ class Driver(db.Model, SerializerMixin):
     __tablename__ = "drivers"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.column(db.String, nullable=False)
+    name = db.Column(db.String, nullable=False)
     state_id = db.Column(db.Integer, db.ForeignKey('states.id'))
 
 
     license = db.relationship("LicenseInfo", back_populates="driver")
-    car = db.relationhsip("Car", back_populates = "driver")
+    car = db.relationship("Car", back_populates = "driver")
     state = db.relationship("State", back_populates="drivers")
-
-
-
-
 
 
 class Car(db.Model, SerializerMixin):
@@ -41,12 +37,11 @@ class Car(db.Model, SerializerMixin):
     year = db.Column(db.Integer, nullable=False)
     color = db.Column(db.String, nullable=False)  
     vin = db.Column(db.String)
+
     license_info_id = db.Column(db.Integer, db.ForeignKey('states.id'))
 
     driver = db.relationship("Driver", "car")
 
-
-   
 
 class LicenseInfo(db.Model, SerializerMixin):
     __tablename__ = "licenseInfo"
@@ -58,11 +53,16 @@ class LicenseInfo(db.Model, SerializerMixin):
     state_id = db.Column(db.Integer, db.ForeignKey('states.id'))
     address = db.Column(db.String, nullable=False)
 
-    license_info_id = db.Column(db.Integer, db.ForeignKey('states.id'))
+    license_info_id = db.Column(db.Integer, db.ForeignKey('drivers.id'))
 
-    driver = db.relationbship("Driver", back_populates="license")
+    driver = db.relationship("Driver", back_populates="license")
 
 
+# Association table for Driver and Car (many-to-many relationship)
+driver_car = db.Table('driver_car',
+    db.Column('driver_id', db.Integer, db.ForeignKey('drivers.id'), primary_key=True),
+    db.Column('car_id', db.Integer, db.ForeignKey('cars.id'), primary_key=True)
+)
 
 
 
