@@ -11,7 +11,6 @@ class State(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     date_moved_to_state = db.Column(db.Date) 
-
     drivers = db.relationship("Driver", back_populates = "state")
 
 
@@ -21,10 +20,8 @@ class Driver(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     state_id = db.Column(db.Integer, db.ForeignKey('states.id'))
-
-
     license = db.relationship("LicenseInfo", back_populates="driver")
-    car = db.relationship("Car", back_populates = "driver")
+    cars = db.relationship("Car", secondary= "driver_car", back_populates = "drivers")
     state = db.relationship("State", back_populates="drivers")
 
 
@@ -37,10 +34,7 @@ class Car(db.Model, SerializerMixin):
     year = db.Column(db.Integer, nullable=False)
     color = db.Column(db.String, nullable=False)  
     vin = db.Column(db.String)
-
-    license_info_id = db.Column(db.Integer, db.ForeignKey('states.id'))
-
-    driver = db.relationship("Driver", "car")
+    drivers = db.relationship("Driver", secondary="driver_car", back_populates="cars")
 
 
 class LicenseInfo(db.Model, SerializerMixin):
@@ -50,11 +44,7 @@ class LicenseInfo(db.Model, SerializerMixin):
     name = db.Column(db.String, nullable=False)
     license_number = db.Column(db.String, nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
-    state_id = db.Column(db.Integer, db.ForeignKey('states.id'))
     address = db.Column(db.String, nullable=False)
-
-    license_info_id = db.Column(db.Integer, db.ForeignKey('drivers.id'))
-
     driver = db.relationship("Driver", back_populates="license")
 
 
@@ -63,13 +53,3 @@ driver_car = db.Table('driver_car',
     db.Column('driver_id', db.Integer, db.ForeignKey('drivers.id'), primary_key=True),
     db.Column('car_id', db.Integer, db.ForeignKey('cars.id'), primary_key=True)
 )
-
-
-
-
-
-
-    
-
-
-
