@@ -13,7 +13,6 @@ class State(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    date_moved_to_state = db.Column(db.Date) 
     drivers = db.relationship("Driver", back_populates = "state")
 
 
@@ -25,9 +24,11 @@ class Driver(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     state_id = db.Column(db.Integer, db.ForeignKey('states.id'))
+    date_moved_to_state = db.Column(db.Date) 
     license = db.relationship("LicenseInfo", back_populates="driver")
     cars = db.relationship("Car", secondary= "driver_car", back_populates = "drivers")
     state = db.relationship("State", back_populates="drivers")
+
 
     @validates('name')
     def validate_name(self, key, value):

@@ -3,6 +3,7 @@
 # Standard library imports
 
 # Remote library imports
+from datetime import datetime
 from flask import request, make_response, jsonify
 from flask_restful import Resource
 
@@ -32,19 +33,25 @@ class StatesByName(Resource):
         else:
             return make_response({"message": "State not found"}, 404)
         
-    def post(self, name):
+    def patch(self, name):
+    # Find the state by name
         state = State.query.filter_by(name=name).first()
         if not state:
-            return make_response({"message", "State does not exist"})
+            return make_response({"message": "State does not exist"}, 404)
         else:
             data = request.get_json()
-            update_move_date = State(
-                date_moved_to_state = data.get("date_moved_to_state")
-            )
-            db.session.add(update_move_date)
+            try:
+                # Convert the string date to a Python date object
+                date_str = data.get("date_moved_to_state")
+                date_moved_to_state = datetime.strptime(date_str, "%Y-%m-%d").date()
+            except ValueError:
+                return make_response({"message": "Invalid date format, use YYYY-MM-DD"}, 400)
+            
+            # Update the existing state object's date
+            state.date_moved_to_state = date_moved_to_state
+            
             db.session.commit()
-
-            return make_response(jsonify(state.to_dict(), 200))
+            return make_response(jsonify(state.to_dict()), 200)
 
 
 api.add_resource(States, "/states")

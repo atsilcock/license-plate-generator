@@ -40,7 +40,6 @@ def seed_data():
         for state_name in us_states:
             state = State(
                 name=state_name,
-                date_moved_to_state=fake.date_this_decade()
             )
             states.append(state)
         db.session.add_all(states)
@@ -53,8 +52,11 @@ def seed_data():
 
             driver = Driver(
                 name=fake.name(),
-                state_id=driver_state.id  # Link driver to a unique state
+                state_id=driver_state.id,  # Link driver to a unique state
+                date_moved_to_state=fake.date_this_decade()  # Add this to Driver
             )
+            db.session.add(driver)
+
             db.session.add(driver)
             db.session.commit()  # Commit to generate driver ID
 
