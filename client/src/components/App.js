@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 // import DisplayStates from "./DisplayStates"; // Import the component
 import DisplayDriver from "./DisplayDriver"
+import NewDriver from "./NewDriver"
 
 function App() {
   const [drivers, setDrivers] = useState([])
@@ -18,9 +19,9 @@ function App() {
 
   return (
     <div>
-      <h1>Project Client</h1>
-      <label>Please Enter Your License Number</label>
-      <input type="text" onChange={(e) => setSearch(e.target.value)}></input>
+      <h1 className="text-teal-600" >Project Client</h1>
+      <label><strong>Please Enter Your License Number: </strong></label>
+      <input class="border-solid border-2 border-black" type="text" onChange={(e) => setSearch(e.target.value)}></input>
       {FilterByLicense.length > 0 ? (
         <DisplayDriver driver={FilterByLicense[0]} license={FilterByLicense[0].license[0]}/>
       ) : (

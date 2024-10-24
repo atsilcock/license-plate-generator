@@ -4,12 +4,12 @@ function DisplayDriver({ license, driver }) {
     
     const carDetails = driver.cars.map((car) => {
         return (
-            <div key = {car.vin}>
-                <p key={car.vin}><strong>Car Color: </strong> {car.color}</p>
-                <p key={car.vin}><strong>Car Make: </strong> {car.make}</p>
-                <p key={car.vin}><strong>Car Model: </strong> {car.model}</p>
-                <p key={car.vin}><strong>Car Year: </strong> {car.year}</p>
-                <p key={car.vin}><strong>Car Vin: </strong> {car.vin}</p>
+            <div key = {car.vin} className="">
+                <p><strong>Car Color: </strong> {car.color}</p>
+                <p><strong>Car Make: </strong> {car.make}</p>
+                <p><strong>Car Model: </strong> {car.model}</p>
+                <p><strong>Car Year: </strong> {car.year}</p>
+                <p><strong>Car Vin: </strong> {car.vin}</p>
             </div>
     )})
     
