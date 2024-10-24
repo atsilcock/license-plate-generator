@@ -143,4 +143,4 @@ api.add_resource(DriverLicense, "/drivers/<int:driver_id>/license")
 api.add_resource(DriverCars, "/drivers/<int:driver_id>/cars")
 
 if __name__ == '__main__':
-    app.run(port=5555, debug=True)
+    app.run(port=5555, debug=False)
