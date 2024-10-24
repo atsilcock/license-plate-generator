@@ -9,7 +9,7 @@ function DisplayStates() {
     .then(data => setStates(data))
   }, [])
   
-  mappedStates = states.map(state => {
+  const mappedStates = states.map(state => {
       return <option key={state.id}>{state.name}</option>
   })
   
