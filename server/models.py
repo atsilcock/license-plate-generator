@@ -55,7 +55,7 @@ class Car(db.Model, SerializerMixin):
     model = db.Column(db.String, nullable=False)
     year = db.Column(db.Integer, nullable=False)
     color = db.Column(db.String, nullable=False)  
-    vin = db.Column(db.String)
+    vin = db.Column(db.String, unique=True, nullable=False)
     drivers = db.relationship("Driver", secondary="driver_car", back_populates="cars")
 
     @validates('make')

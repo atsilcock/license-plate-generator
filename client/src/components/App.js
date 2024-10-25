@@ -31,7 +31,7 @@ function App() {
       <NavBar />
       <Switch>
         <Route path="/" exact component={Home} />
-        <Route path="/display-car-info" component={() => <DisplayDriver drivers= {drivers} licenseInfo= {licenseInfo} />} />
+        <Route path="/display-car-info" component={() => <DisplayDriver drivers= {drivers} licenseInfo= {licenseInfo} setDrivers={setDrivers} />} />
         <Route path="/update-car-info" component={UpdateDriver} />
         <Route path="/delete" component={DeleteDriver} />
       </Switch>

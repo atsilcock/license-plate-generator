@@ -179,6 +179,33 @@ class CarsByID(Resource):
         db.session.commit()
 
         return make_response({"message": "Car deleted"}, 200)
+    
+class CarsByVin(Resource):
+    def get(self, vin):
+        car = Car.query.filter_by(vin=vin).first()
+        if not car:
+            return make_response({"message": "Car not found"}, 404)
+        return make_response(jsonify(car.to_dict()), 200)
+    
+    def patch(self, vin):
+        data = request.get_json()
+        car = Car.query.filter_by(vin=vin).first()
+        if not car:
+            return make_response({"message": "Car not found"}, 404)
+
+        if "make" in data:
+            car.make = data["make"]
+        if "model" in data:
+            car.model = data["model"]
+        if "year" in data:
+            car.year = data["year"]
+        if "color" in data:
+            car.color = data["color"]
+
+        db.session.commit()
+
+        return make_response({"message": "Car updated", "car_id": car.id}, 200)
+
 
 
 
@@ -189,6 +216,8 @@ api.add_resource(DriverCars, "/drivers/<int:driver_id>/cars")
 api.add_resource(Cars, "/cars")
 api.add_resource(CarsByID, "/cars/<int:id>")
 api.add_resource(LicenseInformation, "/licenseinfo")
+api.add_resource(CarsByVin, "/cars/vin/<string:vin>")
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
