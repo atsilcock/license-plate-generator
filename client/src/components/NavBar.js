@@ -10,16 +10,13 @@ function NavBar() {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/view-car-info">View Car Info</Link>
+          <Link to="/display-car-info">View Car Info</Link>
         </li>
         <li>
-          <Link to="/moved-to-state">Moved to State</Link>
+          <Link to="/update-car-info">Update Car Info</Link>
         </li>
         <li>
-          <Link to="/update-driver">Update Driver Info</Link>
-        </li>
-        <li>
-          <Link to="/delete-driver">Delete Driver</Link>
+          <Link to="/delete-driver">Delete Car</Link>
         </li>
       </ul>
     </nav>

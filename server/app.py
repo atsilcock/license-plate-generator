@@ -17,21 +17,27 @@ from models import State, Driver, Car, LicenseInfo  # Import your models
 def index():
     return '<h1>Project Server</h1>'
 
-class States(Resource):
+class LicenseInformation(Resource):
     def get(self):
-        states = [state.to_dict() for state in State.query.all()]
-        if not states:
-            return make_response({"messsage": "error - states do not exisit"}, 404)
-        else:
-            return make_response(jsonify(states), 200)
-    
-class StatesByName(Resource):
-    def get(self, name):
-        state = State.query.filter_by(name=name).first()
-        if state:
-            return make_response(jsonify(state.to_dict()), 200)
-        else:
-            return make_response({"message": "State not found"}, 404)
+        licenses = [license.to_dict() for license in LicenseInfo.query.all()]
+        if not licenses:
+            return make_response({"message": "No licenses found"}, 404)
+        return make_response(jsonify(licenses), 200)
+
+    def post(self):
+        data = request.get_json()
+
+        new_license = LicenseInfo(
+            name=data.get("name"),
+            license_number=data.get("license_number"),
+            date_of_birth=data.get("date_of_birth"),
+            address=data.get("address")
+        )
+
+        db.session.add(new_license)
+        db.session.commit()
+
+        return make_response({"message": "License created", "license_id": new_license.id}, 201)
         
 class Drivers(Resource):
     def get(self):
@@ -133,14 +139,56 @@ class DriverCars(Resource):
         db.session.commit()
 
         return make_response({"message": "Cars added"}, 201)
+    
+class Cars(Resource):
+    def get(self):
+        cars = [car.to_dict() for car in Car.query.all()]
+        if not cars:
+            return make_response({"message": "No cars found"}, 404)
+        return make_response(jsonify(cars), 200)
+    
+    def post(self):
+        data = request.get_json()
+
+        new_car = Car(
+            make=data.get("make"),
+            model=data.get("model"),
+            year=data.get("year"),
+            color=data.get("color"),
+            vin=data.get("vin")
+        )
+
+        db.session.add(new_car)
+        db.session.commit()
+
+        return make_response({"message": "Car created", "car_id": new_car.id}, 201)
+
+class CarsByID(Resource):
+    def get(self, id):
+        car = Car.query.filter_by(id=id).first()
+        if not car:
+            return make_response({"message": "Car not found"}, 404)
+        return make_response(jsonify(car.to_dict()), 200)
+
+    def delete(self, id):
+        car = Car.query.filter_by(id=id).first()
+        if not car:
+            return make_response({"message": "Car not found"}, 404)
+
+        db.session.delete(car)
+        db.session.commit()
+
+        return make_response({"message": "Car deleted"}, 200)
 
 
 
-api.add_resource(States, "/states")
-api.add_resource(StatesByName, "/states/<string:name>")
+
 api.add_resource(Drivers, "/drivers")
 api.add_resource(DriverLicense, "/drivers/<int:driver_id>/license")
 api.add_resource(DriverCars, "/drivers/<int:driver_id>/cars")
+api.add_resource(Cars, "/cars")
+api.add_resource(CarsByID, "/cars/<int:id>")
+api.add_resource(LicenseInformation, "/licenseinfo")
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

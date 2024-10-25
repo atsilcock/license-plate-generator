@@ -1,30 +1,42 @@
-// App.js
-import React, { useState, useEffect } from "react";
-import RoutesConfig from "./RoutesConfig"; // Import the new RoutesConfig component
+import React, { useState, useEffect } from "react"
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import Home from "./Home"
+import NavBar from "./NavBar"
+import DisplayDriver from "./DisplayDriver"
+import UpdateDriver from "./UpdateDriver"
+import DeleteDriver from "./DeleteDriver"
 
 function App() {
-  const [drivers, setDrivers] = useState([]);
-  const [search, setSearch] = useState("");
+  const [drivers, setDrivers] = useState([])
+  console.log(drivers)
 
-  const FilterByLicense = drivers.filter(
-    (driver) => driver.license[0].license_number === search
-  );
+  const[licenseInfo, setLicenseInfo] = useState([])
+  console.log(licenseInfo)
+
 
   useEffect(() => {
     fetch("/drivers")
       .then((response) => response.json())
-      .then((data) => setDrivers(data));
-  }, []);
+      .then((data) => setDrivers(data))
+  }, [])
+
+  useEffect(() => {
+    fetch("/licenseinfo")
+    .then((response) => response.json())
+    .then((data) => setLicenseInfo(data))
+  }, [])
 
   return (
-    <div>
-      <RoutesConfig
-        drivers={drivers}
-        FilterByLicense={FilterByLicense}
-        setSearch={setSearch}
-      />
-    </div>
+    <Router>
+      <NavBar />
+      <Switch>
+        <Route path="/" exact component={Home} />
+        <Route path="/display-car-info" component={() => <DisplayDriver drivers= {drivers} licenseInfo= {licenseInfo} />} />
+        <Route path="/update-car-info" component={UpdateDriver} />
+        <Route path="/delete" component={DeleteDriver} />
+      </Switch>
+    </Router>
   );
 }
 
-export default App;
+export default App
