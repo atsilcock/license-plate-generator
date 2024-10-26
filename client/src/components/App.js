@@ -4,7 +4,7 @@ import Home from "./Home"
 import NavBar from "./NavBar"
 import DisplayDriver from "./DisplayDriver"
 import UpdateDriver from "./UpdateDriver"
-import DeleteDriver from "./DeleteDriver"
+import ViewStateInfo from "./ViewStateInfo"
 
 function App() {
   const [drivers, setDrivers] = useState([])
@@ -32,8 +32,9 @@ function App() {
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/display-car-info" component={() => <DisplayDriver drivers= {drivers} licenseInfo= {licenseInfo} setDrivers={setDrivers} />} />
-        <Route path="/update-car-info" component={UpdateDriver} />
-        <Route path="/delete" component={DeleteDriver} />
+        <Route path="/update-car-info" component={() => <UpdateDriver driver={drivers} setDrivers={setDrivers} />} />
+        <Route path="/view-state-info" component={() => <ViewStateInfo />} />
+        <Route path
       </Switch>
     </Router>
   );

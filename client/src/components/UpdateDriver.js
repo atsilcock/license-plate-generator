@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const UpdateDriver = () => {
+const UpdateDriver = ({ drivers, setDrivers }) => {
     const [search, setSearch] = useState('')
     const [carToUpdate, setCarToUpdate] = useState(null)
     const [updatedCar, setUpdatedCar] = useState({})
@@ -12,15 +12,10 @@ const UpdateDriver = () => {
                 setCarToUpdate(data)
                 setUpdatedCar(data)
             })
-            .catch(() => {
-                setCarToUpdate(null)
-            })
     }
 
     const handleSearch = () => {
-        if (search.trim() !== '') {
-            fetchCarByVin()
-        }
+        fetchCarByVin()
     }
 
     const handleInputChange = (e) => {
@@ -41,10 +36,18 @@ const UpdateDriver = () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log('Car updated successfully:', data)
-            })
-            .catch((error) => {
-                console.error('Error updating car:', error)
+                setDrivers((prevDrivers) =>
+                    prevDrivers.map((driver) =>
+                        driver.id === data.driverId
+                            ? {
+                                  ...driver,
+                                  cars: driver.cars.map((car) =>
+                                      car.vin === data.vin ? data : car
+                                  ),
+                              }
+                            : driver
+                    )
+                )
             })
     }
 

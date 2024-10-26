@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 function DisplayDriver({ drivers, setDrivers }) {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState('')
 
-  // Search driver by name
-  const driver = drivers.find((driver) => driver.name.toLowerCase() === search.toLowerCase());
+  const driver = drivers.find((driver) => driver.name.toLowerCase() === search.toLowerCase())
 
-  // Display driver details
   const displayDriver = driver ? (
     <div className="p-6 bg-blue-400 rounded-lg shadow-lg mb-4">
       <h3>DRIVER INFORMATION</h3>
@@ -19,9 +17,8 @@ function DisplayDriver({ drivers, setDrivers }) {
     </div>
   ) : (
     <p className="mb-4">No driver found</p>
-  );
+  )
 
-  // Delete car function
   const deleteButton = (carId) => {
     fetch(`/cars/${carId}`, {
       method: 'DELETE',
@@ -33,17 +30,16 @@ function DisplayDriver({ drivers, setDrivers }) {
               ...d,
               cars: d.cars.filter((car) => car.id !== carId),
             }))
-          );
+          )
         } else {
-          console.error('Failed to delete the car');
+          console.error('Failed to delete the car')
         }
       })
       .catch((error) => {
-        console.error('Error:', error);
-      });
-  };
+        console.error('Error:', error)
+      })
+  }
 
-  // Display car details
   const carDetails = driver ? (
     driver.cars.map((car) => (
       <div key={car.vin} className="p-6 bg-blue-400 rounded-lg shadow-lg mb-4">
@@ -58,12 +54,10 @@ function DisplayDriver({ drivers, setDrivers }) {
         >
           DELETE
         </button>
-        <button className="bg-orange-400 border-solid border-2 border-black">
-          UPDATE
-        </button>
+
       </div>
     ))
-  ) : null;
+  ) : null
 
   return (
     <div className="p-6 bg-gray-50 rounded-lg shadow-lg">
@@ -80,7 +74,7 @@ function DisplayDriver({ drivers, setDrivers }) {
         {carDetails}
       </div>
     </div>
-  );
+  )
 }
 
-export default DisplayDriver;
+export default DisplayDriver

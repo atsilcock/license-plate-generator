@@ -16,7 +16,10 @@ function NavBar() {
           <Link to="/update-car-info">Update Car Info</Link>
         </li>
         <li>
-          <Link to="/delete-driver">Delete Car</Link>
+          <Link to="/register-car">Register Car</Link>
+        </li>
+        <li>
+          <Link to="/view-state-info">View State Information</Link>
         </li>
       </ul>
     </nav>
