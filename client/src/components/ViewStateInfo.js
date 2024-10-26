@@ -21,6 +21,10 @@ function ViewStateInfo() {
             info: "Drivers in Arkansas must have a valid state driver’s license, and new residents must obtain one within 30 days of moving. Vehicles must be registered annually, and proof of liability insurance is mandatory. Arkansas requires minimum liability coverage of $25,000 for injury or death of one person and $50,000 for two or more persons in an accident. The state requires child safety seats for children under 6 years old or under 60 pounds, and seat belts are required for all front-seat passengers."
         },
         {
+            state: "California",
+            info: "In California, drivers must have a valid California driver’s license, and new residents have 10 days to obtain one. Vehicles must be registered annually, and emissions testing is required in most areas. Proof of insurance is mandatory, with minimum liability coverage of $15,000 per person and $30,000 per accident. California law mandates that children under 8 years old must be secured in a child safety seat, and seat belts are required for all passengers."
+        },
+        {
             state: "Colorado",
             info: "In Colorado, drivers must have a valid Colorado driver’s license, with new residents needing to obtain one within 30 days. Vehicle registration must be renewed annually, and proof of insurance is mandatory, with minimum liability coverage of $25,000 per person and $50,000 per accident. Certain counties require emissions testing for vehicles. Colorado law mandates that children under 8 be secured in a child safety seat, and all passengers must wear seat belts."
         },
@@ -228,7 +232,7 @@ function ViewStateInfo() {
             />
     
           {filteredStates.map((state, index) => (
-            <div key={index} className="state-info-box bg-gray-200 p-4 mb-4">
+            <div key={index} className="state-info-box bg-gray-200 p-4 mb-4 max-w-md">
               <h2 className="text-xl font-bold mb-2">{state.state}</h2>
               <p className="mt-4 mb-7">{state.info}</p>
             </div>
