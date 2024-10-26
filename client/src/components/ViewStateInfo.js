@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState, useMemo } from 'react';
 
 function ViewStateInfo() {
+    const [searchTerm, setSearchTerm] = useState("")
+
     const stateInfo = [
         {
             state: "Alabama",
@@ -209,16 +211,34 @@ function ViewStateInfo() {
             info: "Drivers in Puerto Rico must have a valid Puerto Rico driver’s license, with new residents having 30 days to obtain one. Vehicle registration is required annually, and proof of insurance is mandatory. Puerto Rico mandates minimum liability coverage of $10,000 per person and $20,000 per accident. Children under 4 years old must be secured in a child safety seat, and seat belts are mandatory for all passengers."
         }
     );
+    const filteredStates = useMemo(() => {
+        return stateInfo.filter(state =>
+            state.state.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }, [searchTerm]);
+
     return (
         <div>
-            {stateInfo.map((state, index) => (
-                <div key={index} className="state-info-box bg-gray-200 p-4 mb-4">
-                    <h2 className="text-xl font-bold mb-2">{state.state}</h2>
-                    <p className="mt-4 mb-7">{state.info}</p>
-                </div>
-            ))}
+            <input
+              type="text"
+              placeholder="Search by state name..."
+              className="p-2 border border-gray-300 rounded"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+    
+          {filteredStates.map((state, index) => (
+            <div key={index} className="state-info-box bg-gray-200 p-4 mb-4">
+              <h2 className="text-xl font-bold mb-2">{state.state}</h2>
+              <p className="mt-4 mb-7">{state.info}</p>
+            </div>
+          ))}
+    
+          {filteredStates.length === 0 && (
+            <p className="mt-4">No states found matching your search.</p>
+          )}
         </div>
-    )
-}
+      );
+    }
 
 export default ViewStateInfo

@@ -116,29 +116,29 @@ class DriverCars(Resource):
         else:
             return make_response({"message": "No cars found for this driver"}, 404)
     
-    def post(self, driver_id):
+    def post(self):
         data = request.get_json()
+        driver_name = data.get('driver_name')
 
-        driver = Driver.query.get(driver_id)
+        # Find the driver by name
+        driver = Driver.query.filter_by(name=driver_name).first()
         if not driver:
             return make_response({"message": "Driver not found"}, 404)
 
-        car_data = data.get("cars")
-        if car_data:
-            for car in car_data:
-                new_car = Car(
-                    make=car.get("make"),
-                    model=car.get("model"),
-                    year=car.get("year"),
-                    color=car.get("color"),
-                    vin=car.get("vin")
-                )
-                driver.cars.append(new_car)
-                db.session.add(new_car)
+        # Add a new car to the driver's profile
+        new_car = Car(
+            make=data.get("make"),
+            model=data.get("model"),
+            year=data.get("year"),
+            color=data.get("color"),
+            vin=data.get("vin")
+        )
 
+        driver.cars.append(new_car)
+        db.session.add(new_car)
         db.session.commit()
 
-        return make_response({"message": "Cars added"}, 201)
+        return make_response({"message": f"Car added to {driver_name}'s profile"}, 201)
     
 class Cars(Resource):
     def get(self):
@@ -210,6 +210,8 @@ class CarsByVin(Resource):
 
 
 
+
+
 api.add_resource(Drivers, "/drivers")
 api.add_resource(DriverLicense, "/drivers/<int:driver_id>/license")
 api.add_resource(DriverCars, "/drivers/<int:driver_id>/cars")
@@ -217,6 +219,7 @@ api.add_resource(Cars, "/cars")
 api.add_resource(CarsByID, "/cars/<int:id>")
 api.add_resource(LicenseInformation, "/licenseinfo")
 api.add_resource(CarsByVin, "/cars/vin/<string:vin>")
+
 
 
 if __name__ == '__main__':
