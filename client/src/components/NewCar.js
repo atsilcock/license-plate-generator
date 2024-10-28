@@ -1,20 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react"
+import { DriverContext } from './DriverContext'
 
-function NewCar({ driver, setDriver }) {
-  const [driverName, setDriverName] = useState("");
-  const [make, setMake] = useState("");
-  const [model, setModel] = useState("");
-  const [year, setYear] = useState("");
-  const [color, setColor] = useState("");
-  const [vin, setVin] = useState("");
+function NewCar() {
+  const { drivers, setDrivers } = useContext(DriverContext)
+  const [driverName, setDriverName] = useState("")
+  const [make, setMake] = useState("")
+  const [model, setModel] = useState("")
+  const [year, setYear] = useState("")
+  const [color, setColor] = useState("")
+  const [vin, setVin] = useState("")
 
   const handleFormSubmission = (e) => {
-    e.preventDefault();
-  
+    e.preventDefault()
+
     fetch(`/drivers?name=${driverName}`)
       .then((response) => response.json())
       .then((driverData) => {
-        const driverId = driverData.id;
+        const driverId = driverData.id
         return fetch(`/drivers/${driverId}/cars`, {
           method: "POST",
           headers: {
@@ -27,17 +29,24 @@ function NewCar({ driver, setDriver }) {
             color: color,
             vin: vin,
           }),
-        });
+        })
+        .then((response) => response.json())
+        .then((carData) => {
+          setDrivers((prevDrivers) => {
+            return prevDrivers.map((driver) => {
+              if (driver.id === driverId) {
+                return {
+                  ...driver,
+                  cars: [...driver.cars, carData]
+                }
+              } else {
+                return driver
+              }
+            })
+          })
+        })
       })
-      .then((response) => response.json())
-      .then((carData) => {
-        const updatedDriver = {
-          ...driver,
-          cars: [...driver.cars, carData],
-        };
-        setDriver(updatedDriver);
-      });
-  };
+  }
 
   return (
     <div>
@@ -120,7 +129,7 @@ function NewCar({ driver, setDriver }) {
         </div>
       </form>
     </div>
-  );
+  )
 }
 
-export default NewCar;
+export default NewCar

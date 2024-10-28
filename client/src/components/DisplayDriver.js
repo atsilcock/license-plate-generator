@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import { DriverContext } from './DriverContext'
 
-function DisplayDriver({ drivers, setDrivers }) {
+function DisplayDriver() {
+  const { drivers, setDrivers } = useContext(DriverContext)
   const [search, setSearch] = useState('')
 
   const driver = drivers.find((driver) => driver.name.toLowerCase() === search.toLowerCase())
@@ -54,7 +56,6 @@ function DisplayDriver({ drivers, setDrivers }) {
         >
           DELETE
         </button>
-
       </div>
     ))
   ) : null
